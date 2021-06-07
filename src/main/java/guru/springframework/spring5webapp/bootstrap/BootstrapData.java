@@ -2,8 +2,10 @@ package guru.springframework.spring5webapp.bootstrap;
 
 import guru.springframework.spring5webapp.domain.Author;
 import guru.springframework.spring5webapp.domain.Book;
+import guru.springframework.spring5webapp.domain.Publisher;
 import guru.springframework.spring5webapp.repositories.AuthorRepository;
 import guru.springframework.spring5webapp.repositories.BookRepository;
+import guru.springframework.spring5webapp.repositories.PublisherRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -14,14 +16,19 @@ public class BootstrapData implements CommandLineRunner {
 
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
+    private final PublisherRepository publisherRepository;
 
-    public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository) {
+    public BootstrapData(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.publisherRepository = publisherRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        /*
+           Author & book
+         */
         Author rob = new Author("Rob", "Ghyselinck");
         Book petitPrince = new Book("Le petit prince", "201903");
 
@@ -45,6 +52,12 @@ public class BootstrapData implements CommandLineRunner {
         System.out.println("First program in Spring");
         System.out.println("There are: " + bookRepository.count() + " books, and " + authorRepository.count() + " authors.");
 
+        /*
+            Address and publisher
+         */
+        Publisher lesLiensQuiLiberent = new Publisher("Les Liens Qui Liberent", "14 Rue Des Champs", "Paris", "France", "6000");
 
+        publisherRepository.save(lesLiensQuiLiberent);
+        System.out.println("And there are: " + publisherRepository.count() + " publishers");
     }
 }
