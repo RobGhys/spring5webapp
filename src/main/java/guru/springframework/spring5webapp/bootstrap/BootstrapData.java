@@ -27,37 +27,40 @@ public class BootstrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         /*
-           Author & book
+           Author & book & publisher
          */
+        Publisher lesLiensQuiLiberent = new Publisher("Les Liens Qui Liberent", "14 Rue Des Champs", "Paris", "France", "6000");
         Author rob = new Author("Rob", "Ghyselinck");
         Book petitPrince = new Book("Le petit prince", "201903");
+        publisherRepository.save(lesLiensQuiLiberent);
 
         rob.getBooks().add(petitPrince);
         petitPrince.getAuthors().add(rob);
+        petitPrince.setPublisher(lesLiensQuiLiberent);
+        lesLiensQuiLiberent.getBooks().add(petitPrince);
 
         // Saving both items to their repositories
+
         authorRepository.save(rob);
         bookRepository.save(petitPrince);
+        publisherRepository.save(lesLiensQuiLiberent);
 
         Author caro  = new Author("Caroline", "Hazard");
         Book cuisine = new Book("Le gourmet", "29292929");
 
         caro.getBooks().add(cuisine);
         cuisine.getAuthors().add(caro);
+        cuisine.setPublisher(lesLiensQuiLiberent);
+        lesLiensQuiLiberent.getBooks().add(cuisine);
 
         // Saving again
         authorRepository.save(caro);
         bookRepository.save(cuisine);
+        publisherRepository.save(lesLiensQuiLiberent);
 
         System.out.println("First program in Spring");
         System.out.println("There are: " + bookRepository.count() + " books, and " + authorRepository.count() + " authors.");
-
-        /*
-            Address and publisher
-         */
-        Publisher lesLiensQuiLiberent = new Publisher("Les Liens Qui Liberent", "14 Rue Des Champs", "Paris", "France", "6000");
-
-        publisherRepository.save(lesLiensQuiLiberent);
         System.out.println("And there are: " + publisherRepository.count() + " publishers");
+        System.out.println("And publishers have published: " + lesLiensQuiLiberent.getBooks().size());
     }
 }
